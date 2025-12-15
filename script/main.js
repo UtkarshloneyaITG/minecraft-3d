@@ -154,7 +154,7 @@ const createScene = function () {
     "multiMatForOakWood",
     scene
   );
-  multiMatForOakWood.specularColor = new BABYLON.Color3.Black()
+  multiMatForOakWood.specularColor = BABYLON.Color3.Black()
   multiMatForOakWood.subMaterials.push(OakwoodMat); // index 0
   multiMatForOakWood.subMaterials.push(oakWoodFBMat); // index 2
   multiMatForOakWood.subMaterials.push(OakwoodCutMat); // index 1
@@ -446,15 +446,36 @@ const createScene = function () {
     fillBlock(x - 1, y + 7, z + 2, x + 1, y + 8, z + 2, leaf)
 
     fillBlock(x - 1, y + 9, z - 1, x + 1, y + 9, z + 1, leaf)
-
-
   }
-  createTree(10, GroundCood, 10, oakWoodBlock, createLeafBlock(scene))
-  createTree(14, GroundCood, 17, oakWoodBlock, createLeafBlock(scene))
-  createTree(15, GroundCood, 26, oakWoodBlock, createLeafBlock(scene))
-  createTree(20, GroundCood, 10, oakWoodBlock, createLeafBlock(scene))
-  createTree(30, GroundCood, 18, oakWoodBlock, createLeafBlock(scene))
-  createTree(-10, GroundCood, 0, oakWoodBlock, createLeafBlock(scene))
+  function createGrassBlock(scene, x, y, z) {
+    const grassBlock = BABYLON.MeshBuilder.CreateBox("grassBlock", {}, scene)
+    const grassBlockSideTexture = new BABYLON.Texture("assets/texture/grassBlockSide.jpg", scene)
+    const grassBlockTopTexture = new BABYLON.Texture("assets/texture/grassBlockTop.png", scene)
+    const grassBlockBottomTexture = new BABYLON.Texture("assets/texture/dirtBlock.jfif", scene)
+
+    const grassTopMat = new BABYLON.StandardMaterial("grassTopMat", scene)
+    grassTopMat.diffuseTexture = grassBlockTopTexture
+    grassTopMat.specularColor = BABYLON.Color3.Black()
+    const grassBlockSideMat = new BABYLON.StandardMaterial("grassBlocksideMat", scene)
+    grassBlockSideMat.diffuseTexture = grassBlockSideTexture
+    grassBlockSideMat.specularColor = BABYLON.Color3.Black()
+    const grassBlockBottomMat = new BABYLON.StandardMaterial("grassBlockBottomMat", scene)
+    grassBlockBottomMat.diffuseTexture = grassBlockBottomTexture
+    grassBlockBottomMat.specularColor = BABYLON.Color3.Black()
+
+    grassBlock.SubMesh = []
+
+
+    grassBlock.position.set(x, y, z)
+  }
+  const dirtBlock1 = createGrassBlock(scene, 6, GroundCood, 6)
+  const leafBlock = createLeafBlock(scene)
+  createTree(14, GroundCood, 17, oakWoodBlock, leafBlock)
+  createTree(10, GroundCood, 10, oakWoodBlock, leafBlock)
+  createTree(15, GroundCood, 26, oakWoodBlock, leafBlock)
+  createTree(20, GroundCood, 10, oakWoodBlock, leafBlock)
+  createTree(30, GroundCood, 18, oakWoodBlock, leafBlock)
+  createTree(-10, GroundCood, 0, oakWoodBlock, leafBlock)
   const campFire1 = campFire(scene, 10, GroundCood, 3)
   dirtBlock.position.set(9, GroundCood, 3);
 
@@ -565,7 +586,7 @@ const createScene = function () {
   oakPlankBlock.dispose()
   oakWoodBlock.dispose()
   dirtBlock.dispose()
-
+  leafBlock.dispose()
 
   return scene;
 };
